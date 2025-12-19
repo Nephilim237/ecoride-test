@@ -36,18 +36,24 @@ try {
     // Initialisation du Router
     $router = new Router();
 
-// Creation des Routes
-    $router->get('/', 'HomeController@index');
-    $router->get('/login', 'AuthController@login');
-    $router->post('/login/handle', 'AuthController@handle_login');
-    $router->get('/register', 'AuthController@register');
-    $router->post('/register/handle', 'AuthController@handle_register');
-    $router->get('/logout', 'AuthController@logout');
-    $router->get('/profil', 'UserController@profile');
-
-//$router->get('/trajets', 'RideController@index');
-//$router->get('/trajets/recherche', 'RideController@search');
-//$router->post('/trajets/creer', 'RideController@create');
+    // Creation des Routes
+    $router
+        ->get('/', 'HomeController@index')
+        ->get('/login', 'AuthController@login')
+        ->post('/login/handle', 'AuthController@handle_login')
+        ->get('/register', 'AuthController@register')
+        ->post('/register/handle', 'AuthController@handle_register')
+        ->get('/profile', 'UserController@profile')
+        ->get('/become-passenger', 'PartnerController@become_passenger')
+        ->get('/become-partner', 'PartnerController@become_partner')
+        ->post('/become-partner/handle', 'PartnerController@handle_become_partner')
+        ->get('/add-car', 'VehicleController@index')
+        ->post('/add-car/handle', 'VehicleController@handle_add_car')
+        ->post('/add-preference', 'UserController@add_preference')
+        ->get('/carpool', 'CarpoolController@index')
+        ->get('/carpool/search', 'CarpoolController@search')
+        ->get('/carpool/autocomplete', 'CarpoolController@autocomplete')
+        ->get('/logout', 'AuthController@logout');
 
     $router->dispatch();
 } catch (Throwable $e) {
@@ -59,5 +65,3 @@ try {
         echo "Une erreur s'est produite. Notre equipe y travaille.";
     }
 }
-
-

@@ -1,21 +1,19 @@
-<?php  require_once __DIR__. '/../partials/header.php';
-?>
-    <section class="flash-messages">
-        <div class="container">
-            <?php if ($this->session->has_flash('error')): ?>
-                <div class="alert alert-error">
-                    <?= $this->session->get_flash('error') ?>
-                </div>
-            <?php endif; ?>
+<section class="flash-messages">
+    <div class="container">
+        <?php if ($this->session->has_flash('error')): ?>
+            <div class="alert alert-danger">
+                <?= $this->session->get_flash('error') ?>
+            </div>
+        <?php endif; ?>
 
-            <?php if ($this->session->has_flash('success')): ?>
-                <div class="alert alert-success">
-                    <?= $this->session->get_flash('success') ?>
-                </div>
-            <?php endif; ?>
-        </div>
+        <?php if ($this->session->has_flash('success')): ?>
+            <div class="alert alert-success">
+                <?= $this->session->get_flash('success') ?>
+            </div>
+        <?php endif; ?>
+    </div>
 
-    </section>
+</section>
 
 <section class="register-form py-5 my-5" id="register-form">
     <div class="container">
@@ -50,7 +48,7 @@
                         <div class="mb-3">
                             <div class="col-md-10 col-sm-12 mx-auto">
                                 <div class="form-check ms-3">
-                                    <input type="checkbox" class="form-check-input fs-18" value="" id="remember-me" checked>
+                                    <input type="checkbox" class="form-check-input fs-18" value="" name="remember_me" id="remember-me">
                                     <label for="remember-me" class="form-check-label fs-18 ps-2 fw-500 er-text-dark">Se
                                         souvenir</label>
                                 </div>
@@ -69,6 +67,3 @@
         </div>
     </div>
 </section>
-
-<?php  require_once __DIR__. '/../partials/footer.php';
-?>

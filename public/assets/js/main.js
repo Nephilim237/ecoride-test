@@ -11,9 +11,14 @@ $(document).ready(function () {
                 items: 1,
                 nav: true
             },
-            600: {
-                items: 3,
+            480: {
+                items: 1,
                 nav: false
+            },
+            768: {
+                items: 2,
+                nav: true,
+                loop: false
             },
             1000: {
                 items: 3,

@@ -40,7 +40,7 @@ class RoleManager
     public static function has_role(int $userRole, string $role): bool
     {
         $requiredRole = self::MASQUES[$role] ?? self::VISITEUR;
-        return ($userRole & $role) === $role;
+        return ($userRole & $requiredRole) === $requiredRole;
     }
 
     /**

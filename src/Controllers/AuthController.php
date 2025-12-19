@@ -14,15 +14,6 @@ class AuthController extends Controller
         parent::__construct();
     }
 
-    public function register(): void
-    {
-        $this->auth->require_guest();
-
-        $this->renderView('auth/register', [
-            'title' => 'Inscription | '. APP_NAME
-        ]);
-    }
-
     /**
      * Logique metier de l'inscription
      * @return void
@@ -58,9 +49,18 @@ class AuthController extends Controller
         if ($this->auth->register($userData)) {
             $this->session->set_flash('success', "Inscription reussie! Vous pouvez maintenant vous connecter.");
             $this->redirect('/login');
-        }else {
+        } else {
             $this->redirect('/register');
         }
+    }
+
+    public function register(): void
+    {
+        $this->auth->require_guest();
+
+        $this->renderView('auth/register', [
+            'title' => 'Inscription | ' . APP_NAME
+        ]);
     }
 
     /**
@@ -69,10 +69,11 @@ class AuthController extends Controller
      */
     public function login(): void
     {
+
         $this->auth->require_guest();
 
         $this->renderView('auth/login', [
-            'title' => 'Connexion | '. APP_NAME
+            'title' => 'Connexion | ' . APP_NAME
         ]);
     }
 
@@ -82,12 +83,16 @@ class AuthController extends Controller
      */
     public function handle_login(): void
     {
+        // Si l'utilisateur est deja connecte, le rediriger vers son profil
+        $this->auth->require_guest();
+
+        // Si la page n'est pas demande en POST, il y a violation de protocol
         if ($_SERVER['REQUEST_METHOD'] !== "POST") {
             $this->redirect('/login');
         }
 
-        $pseudo = $_POST['pseudo'] ?? '';
-        $password = $_POST['password'] ?? '';
+        $pseudo = sanitize($_POST['pseudo']) ?? '';
+        $password = sanitize($_POST['password']) ?? '';
 
         // var_dump($pseudo, $password);
         // exit();
@@ -97,9 +102,10 @@ class AuthController extends Controller
             $this->redirect('/login');
         }
 
-        if ($this->auth->attempt_to_connect($pseudo, $password)) {
+        $remember = isset($_POST['remember_me']);
+        if ($this->auth->attempt_to_connect($pseudo, $password, $remember)) {
             $this->session->set_flash('success', 'Connexion reussie !');
-            $this->redirect('/');
+            $this->redirect('/profile', ['p' => $pseudo]);
         } else {
             $this->session->set_flash('error', "Pseudo ou mot de passe incorrect.");
             $this->redirect('/login');
@@ -109,8 +115,6 @@ class AuthController extends Controller
     public function logout(): void
     {
         $this->auth->logout();
-        $this->session->set_flash('success', 'Vous etes maintenant deconnecte.');
-        $this->redirect('/');
     }
 
 }

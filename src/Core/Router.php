@@ -22,9 +22,12 @@ class Router
         $url = $_GET['url'] ?? '';
         $method = $_SERVER['REQUEST_METHOD'];
 
+        // REcuperer tous les parametre GET de l'URL
+        $params = $this->getAllParams();
+
         foreach($this->routes[$method] as $path => $callback) {
             if ($this->matchRoute($path, $url)) {
-                return $this->executeCallback($callback);
+                return $this->executeCallback($callback, $params);
             }
         }
 
@@ -39,9 +42,13 @@ class Router
         return $route === $url;
     }
 
-    private function executeCallback($callback) {
+    private function executeCallback($callback, array $params = []) {
+        if (is_callable($callback)) {
+            return call_user_func($callback, $params);
+        }
+
         if(is_string($callback)) {
-            list($controllerName, $method) = explode('@', $callback); //RideController@search
+            list($controllerName, $method) = explode('@', $callback); //CarpoolModel@search
             $controller = "Ecoride\\Ecoride\\Controllers\\$controllerName";
 
             if(class_exists($controller)) {
@@ -58,6 +65,16 @@ class Router
 
         // Si callback invalide, alors, echec
         return $this->handle_server_error("Callback Invalide.");
+    }
+
+    private function getAllParams(): array {
+        $params = [];
+
+        foreach ($_GET as $key => $value) {
+            $params[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+        }
+
+        return $params;
     }
 
     private function handle_not_found(string $message = ''): bool
