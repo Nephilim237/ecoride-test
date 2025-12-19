@@ -16,6 +16,7 @@
         }
     ],
     "require": {
-        "mongodb/mongodb": "^1.19"
+        "mongodb/mongodb": "^1.19",
+        "fakerphp/faker": "^1.23"
     }
 }

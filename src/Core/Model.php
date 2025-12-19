@@ -44,7 +44,7 @@ abstract class Model
         return $collection->insertOne($data);
     }
 
-    protected function mongoFind($collection, $filter = []): \MongoDB\Driver\CursorInterface&\Iterator
+    protected function mongoFind($collection, $filter = [])
     {
         $collection = $this->mongo->getCollection($collection);
         return $collection->find($filter);
