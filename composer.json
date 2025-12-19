@@ -1,22 +1,28 @@
 {
-    "name": "ecoride/ecoride",
-    "version": "1.0.0",
-    "description": "Application web de covoiturage",
-    "type": "project",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Ecoride\\Ecoride\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Coding City",
-            "email": "codingcity237@gmail.com"
-        }
-    ],
-    "require": {
-        "mongodb/mongodb": "^1.19",
-        "fakerphp/faker": "^1.23"
+  "name": "ecoride/ecoride",
+  "version": "1.0.0",
+  "description": "Application web de covoiturage",
+  "type": "project",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Ecoride\\Ecoride\\": "src/"
     }
+  },
+  "authors": [
+    {
+      "name": "Coding City",
+      "email": "codingcity237@gmail.com"
+    }
+  ],
+  "require": {
+    "mongodb/mongodb": "^1.19",
+    "filp/whoops": "^2.18",
+    "symfony/var-dumper": "^7.3",
+    "ext-mongodb": "*",
+    "ext-pdo": "*"
+  },
+  "require-dev": {
+    "fakerphp/faker": "^1.24"
+  }
 }

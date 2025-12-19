@@ -4,9 +4,9 @@ namespace Ecoride\Ecoride\Core;
 
 abstract class Model
 {
-    protected $connection;
-    protected $mongo;
-    protected $table;
+    protected \PDO $connection;
+    protected ?MongoManager $mongo;
+    protected string $table;
 
     public function __construct(){
         $this->connection = Database::getInstance()->getConnection();
@@ -16,7 +16,7 @@ abstract class Model
     // Methodes communes pour MariaDB
     public function find_by_id(int $id): mixed
     {
-        $stmt = $this->connection->prepare("SELECT * FROM {$this->table} WHERE id = ?");
+        $stmt = $this->connection->prepare("SELECT * FROM {$this->table} WHERE user_id = ?");
         $stmt->execute([$id]);
         return $stmt->fetch();
     }
@@ -44,10 +44,23 @@ abstract class Model
         return $collection->insertOne($data);
     }
 
-    protected function mongoFind($collection, $filter = [])
+    protected function mongoFind($collection, $filter = []): \MongoDB\Driver\CursorInterface&\Iterator
     {
         $collection = $this->mongo->getCollection($collection);
         return $collection->find($filter);
+    }
+
+    public function get_notices(): false|array
+    {
+        $stmt = $this->connection->query("
+            SELECT a.*, u.photo, u.nom, u.prenom
+            FROM avis a
+            JOIN user u ON a.passager_id = u.user_id
+            WHERE statut = 'publie' AND note >= '3.0' 
+            ORDER BY date_creation DESC 
+            LIMIT 12
+        ");
+        return $stmt->fetchAll();
     }
 
 }
